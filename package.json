@@ -1,0 +1,26 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "simply video provides video calls on top of socket.io and webRTC with peerjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rmmcosta/SimplyVideo.git"
+  },
+  "keywords": [
+    "socket.io",
+    "webrtc",
+    "peerjs",
+    "video",
+    "chat"
+  ],
+  "author": "rmmcosta",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rmmcosta/SimplyVideo/issues"
+  },
+  "homepage": "https://github.com/rmmcosta/SimplyVideo#readme"
+}
