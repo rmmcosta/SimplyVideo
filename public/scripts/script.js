@@ -1,7 +1,11 @@
 console.log("Room id: ", ROOM_ID);
 
 const socket = io();//by default points to the root path /
-const peer = new Peer();
+const peer = new Peer({
+    host: 'localhost',
+    port: 9000,
+    path: '/simplyvideo'
+});
 
 navigator.mediaDevices.getUserMedia({
     video: true,
@@ -21,6 +25,11 @@ navigator.mediaDevices.getUserMedia({
 peer.on('open', id => {
     console.log('peer open');
     socket.emit('joined-room', ROOM_ID, id);
+});
+
+peer.on('error', function (err) {
+    console.log(err);
+    alert('' + err);
 });
 
 peer.on('call', call => {
