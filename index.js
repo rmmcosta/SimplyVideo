@@ -21,21 +21,16 @@ app.get("/room/:room", (req, res) => {
   res.render("index", { roomId: req.params.room });
 });
 
-io.on("connection", socket => {
-  console.log("a user connected");
+io.on('connection', socket => {
+  // When someone attempts to join the room
+  socket.on('join-room', (roomId, userId) => {
+    socket.join(roomId);  // Join the room
+    socket.broadcast.emit('user-connected', userId); // Tell everyone else in the room that we joined
 
-  socket.on('joined-room', (roomId, userId) => {
-    console.log('joined-room', 'userid: ', userId, 'roomId ', roomId);
-    socket.join(roomId);
-    socket.broadcast.emit('user-connected', userId);
+    // Communicate the disconnection
     socket.on('disconnect', () => {
-      console.log("user disconnected with user id ", userId);
-      socket.broadcast.emit('user disconnected', userId);
+      socket.broadcast.emit('user-disconnected', userId);
     });
-  });
-
-  socket.on('disconnect', () => {
-    console.log("user disconnected");
   });
 });
 

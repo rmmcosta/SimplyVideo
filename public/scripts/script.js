@@ -1,54 +1,52 @@
-console.log("Room id: ", ROOM_ID);
+const socket = io('/'); // Create our socket
 
-const socket = io();//by default points to the root path /
-const peer = new Peer();
+const myPeer = new Peer(); // Creating a peer element which represents the current user
 
+// Access the user's video and audio
 navigator.mediaDevices.getUserMedia({
     video: true,
     audio: true
 }).then(stream => {
-    addVideoStream('my-video-grid', stream, true) // Display our video to ourselves
-    const call = peer.call('another-peers-id', stream);
-    call.on('stream', remoteStream => {
-        // Show stream in some video/canvas element
-        console.log('remote stream');
-        addVideoStream('other-video-grid', remoteStream, false);
+    const myVideo = document.createElement('video'); // Create a new video tag to show our video
+    myVideo.muted = true; // Mute ourselves on our end so there is no feedback loop
+    addVideoStream(myVideo, stream); // Display our video to ourselves
+
+    myPeer.on('call', call => { // When we join someone's room we will receive a call from them
+        call.answer(stream); // Stream them our video/audio
+        const video = document.createElement('video'); // Create a video tag for them
+        call.on('stream', userVideoStream => { // When we recieve their stream
+            addVideoStream(video, userVideoStream); // Display their video to ourselves
+        })
     });
-}).catch(err => {
-    console.log('Failed to get local stream', err);
-});
 
-peer.on('open', id => {
-    console.log('peer open');
-    socket.emit('joined-room', ROOM_ID, id);
-});
-
-peer.on('call', call => {
-    console.log('peer call');
-    navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: true
-    }).then(stream => {
-        call.answer(stream); // Answer the call with an A/V stream.
-        call.on('stream', remoteStream => {
-            addVideoStream('other-video-grid', remoteStream, false);
-        });
-    }).catch(err => {
-        console.log('Failed to get local stream', err);
+    socket.on('user-connected', userId => { // If a new user connect
+        connectToNewUser(userId, stream);
     });
 });
 
-socket.on('user-connected', userId => { // If a new user connect
-    console.log('user-connected ', userId);
+myPeer.on('open', id => { // When we first open the app, have us join a room
+    socket.emit('join-room', ROOM_ID, id);
 });
 
-addVideoStream = (parentId, stream, muted) => {
-    const videoParent = document.getElementById(parentId);
-    videoParent.innerHTML = '';
-    const videoElement = document.createElement('video');
-    videoElement.srcObject = stream;
-    videoElement.autoplay = true;
-    videoElement.muted = muted;
-    videoParent.appendChild(videoElement);
-};
+function connectToNewUser(userId, stream) { // This runs when someone joins our room
+    const call = myPeer.call(userId, stream); // Call the user who just joined
+    // Add their video
+    const video = document.createElement('video');
+    call.on('stream', userVideoStream => {
+        addVideoStream(video, userVideoStream);
+    });
+    // If they leave, remove their video
+    call.on('close', () => {
+        video.remove();
+    });
+}
 
+
+function addVideoStream(video, stream) {
+    video.srcObject = stream;
+    video.addEventListener('loadedmetadata', () => { // Play the video as it loads
+        video.play();
+    });
+    const videoGrid = document.getElementById('video-grid'); // Find the Video-Grid element
+    videoGrid.append(video); // Append video element to videoGrid
+}
