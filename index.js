@@ -21,7 +21,23 @@ app.get("/room/:room", (req, res) => {
   res.render("index", { roomId: req.params.room });
 });
 
-io.on("connection", (socket) => {});
+io.on("connection", socket => {
+  console.log("a user connected");
+
+  socket.on('joined-room', (roomId, userId) => {
+    console.log('joined-room', 'userid: ', userId, 'roomId ', roomId);
+    socket.join(roomId);
+    socket.broadcast.emit('user-connected', userId);
+    socket.on('disconnect', () => {
+      console.log("user disconnected with user id ", userId);
+      socket.broadcast.emit('user disconnected', userId);
+    });
+  });
+
+  socket.on('disconnect', () => {
+    console.log("user disconnected");
+  });
+});
 
 httpServer.listen(config.API_PORT, () => {
   const appid = process.env.CODESPHERE_APP_ID;

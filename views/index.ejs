@@ -1,19 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/styles/style.css">
-    <script type="text/javascript">
-      const ROOM_ID = "<%=roomId%>";
-    </script>
-    <script src="/socket.io/socket.io.js"></script>
-	<script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
-    <script src="/scripts/script.js"></script>
-    <title>Simply Video</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/styles/style.css">
+  <script type="text/javascript">
+    const ROOM_ID = "<%=roomId%>";
+  </script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
+  <script src="/scripts/script.js"></script>
+  <title>Simply Video</title>
 </head>
+
 <body>
-  <div id="video-grid"></div>
+  <div class="main">
+    <div id="my-video-grid">
+      <h3>My Video</h3>
+      <img src="/images/video-conf.jpeg" alt="my video" srcset="" width="100%" height="100%">
+    </div>
+    <div id="other-video-grid">
+      <h3>Others Video</h3>
+      <img src="/images/video-conf.jpeg" alt="others video" srcset="" width="100%" height="100%">
+    </div>
+  </div>
 </body>
+
 </html>
