@@ -1,14 +1,13 @@
 const express = require("express");
 const app = express();
-const http = require("http");
-const httpServer = http.createServer(app);
+const https = require('https');
+const fs = require('fs');
 const { Server } = require("socket.io");
-const io = new Server(httpServer);
 const { v4: uuidv4 } = require("uuid");
 const config = require("./config");
 const cors = require('cors');
 
-const whitelist = ['http://127.0.0.1:8081', process.env.IP, 'http://localhost:3000'];
+const whitelist = ['http://127.0.0.1:8081', process.env.IP, 'http://localhost:3000', 'https://109.49.167.65:3000'];
 const corsOptions = {
   origin: function (origin, callback) {
     console.log('cors origin:', origin);
@@ -45,6 +44,7 @@ app.get("/room/:room", cors(corsOptions), (req, res) => {
 });
 
 io.on('connection', socket => {
+  console.log('on io connection');
   // When someone attempts to join the room
   console.log('on socket connection');
 
@@ -65,10 +65,10 @@ io.on('connection', socket => {
   });
 });
 
-httpServer.listen(config.API_PORT, () => {
+httpsServer.listen(config.API_PORT, () => {
   const appid = process.env.CODESPHERE_APP_ID;
   let appurl;
   if (appid) appurl = `https://${appid}-${config.API_PORT}.codesphere.com`;
-  else appurl = `http://localhost:${config.API_PORT}`;
+  else appurl = `https://localhost:${config.API_PORT}`;
   console.info(`You can access the Simply Video on ${appurl}`);
 });
