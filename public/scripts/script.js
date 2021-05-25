@@ -1,6 +1,10 @@
 const socket = io('/'); // Create our socket
 
-const myPeer = new Peer(); // Creating a peer element which represents the current user
+const myPeer = new Peer({
+    host: '109.49.167.65',
+    port: 9000,
+    path: '/myapp'
+}); // Creating a peer element which represents the current user
 
 // Access the user's video and audio
 navigator.mediaDevices.getUserMedia({
@@ -25,13 +29,17 @@ navigator.mediaDevices.getUserMedia({
 });
 
 myPeer.on('open', id => { // When we first open the app, have us join a room
+    console.log('peer open');
     socket.emit('join-room', ROOM_ID, id);
 });
+
+myPeer.on('error', err => { console.error(err) });
 
 function connectToNewUser(userId, stream) { // This runs when someone joins our room
     const call = myPeer.call(userId, stream); // Call the user who just joined
     // Add their video
     const video = document.createElement('video');
+    video.muted = true;
     call.on('stream', userVideoStream => {
         addVideoStream(video, userVideoStream);
     });
