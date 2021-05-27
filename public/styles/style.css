@@ -29,3 +29,11 @@ video {
   height    : 100%;
   object-fit: cover;
 }
+
+.transparent {
+  opacity: 0.1;
+}
+
+.ml-2 {
+  margin-left: 10px;
+}
