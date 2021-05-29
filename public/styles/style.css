@@ -1,9 +1,5 @@
 #video-grid {
   display              : grid;
-<<<<<<< HEAD
-  grid-template-columns: repeat(auto-fill, 300px);
-  grid-auto-rows       : 300px;
-=======
   grid-template-columns: repeat(3, 1fr);
   gap                  : 10px;
   grid-auto-rows       : minmax(300px, auto);
@@ -34,7 +30,6 @@
 
 #othersVideoControls {
   width: 35%;
->>>>>>> myversion
 }
 
 video {
