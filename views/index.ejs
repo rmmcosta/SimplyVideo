@@ -5,6 +5,8 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+    integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
   <link rel="stylesheet" href="/styles/style.css">
   <script type="text/javascript">
     const ROOM_ID = "<%=roomId%>";
@@ -19,12 +21,40 @@
 <body>
   <div class="main">
     <div id="my-video-grid">
-      <h3>My Video</h3>
-      <img src="/images/video-conf.jpeg" alt="my video" srcset="" width="100%" height="100%">
+      <div id="my-video-placeholder" class="d-flex justify-content-center">
+        <img src="/images/video-conf.jpeg" alt="my video" srcset="" width="100%" height="100%">
+      </div>
+      <div class="text-center mt-2">
+        <span class="badge rounded-pill bg-primary p-2 text-white">My Video</span>
+      </div>
+      <div class="d-flex justify-content-center">
+        <div class="text-center border border-2 rounded-pill border-darkgray bg-lightgray p-2 m-2" id="myVideoControls">
+          <i id="muteControl" class="m-2 transparent col-xs gray-dark fas fa-volume-mute"></i>
+          <i id="videoControl" class="m-2 transparent col-xs gray-dark fas fa-video"></i>
+        </div>
+      </div>
     </div>
     <div id="other-video-grid">
-      <h3>Others Video</h3>
-      <img src="/images/video-conf.jpeg" alt="others video" srcset="" width="100%" height="100%">
+      <div id="others-video-placeholder" class="d-flex justify-content-center">
+        <img src="/images/video-conf.jpeg" alt="others video" srcset="" width="80%" height="80%">
+      </div>
+      <div class="text-center">
+        <span class="badge rounded-pill bg-primary p-2 text-white mt-2">Others Video</span>
+      </div>
+      <div class="d-flex justify-content-center">
+        <div class="text-center border border-2 rounded-pill border-darkgray bg-lightgray p-2 m-2"
+          id="othersVideoControls">
+          <i class="m-2 transparent col-xs gray-dark fas fa-volume-mute"></i>
+          <i class="m-2 transparent col-xs gray-dark fas fa-volume-up"></i>
+          <i class="m-2 transparent col-xs gray-dark fas fa-volume-down"></i>
+          <span class="m-2 transparent col-xs gray-dark">50%</span>
+        </div>
+      </div>
+      <div class="ball-loader" id="waitingOthersVideo">
+        <div class="ball-loader-ball ball1"></div>
+        <div class="ball-loader-ball ball2"></div>
+        <div class="ball-loader-ball ball3"></div>
+      </div>
     </div>
   </div>
 </body>
