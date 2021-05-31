@@ -1,0 +1,6 @@
+*.crt
+*.pem
+*.key
+*/*.crt
+*/*.pem
+*/*.key

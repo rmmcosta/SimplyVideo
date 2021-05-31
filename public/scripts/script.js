@@ -8,7 +8,7 @@ const CONTROLS_INACTIVE_STYLE = ' m-2 transparent col-xs gray-dark';
 
 const socket = io();//by default points to the root path /
 const peer = new Peer({
-    host: '109.49.167.65',
+    host: 'rmmcosta.hopto.org',
     port: 9000,
     path: '/myapp'
 });
@@ -26,7 +26,7 @@ navigator.mediaDevices.getUserMedia({
     console.log('Failed to get local stream', err);
 });
 
-myPeer.on('open', id => { // When we first open the app, have us join a room
+peer.on('open', id => { // When we first open the app, have us join a room
     console.log('peer open');
     socket.emit('joined-room', ROOM_ID, id);
     myUserId = id;

@@ -4,9 +4,8 @@
   "description": "simply video provides video calls on top of socket.io and webRTC with peerjs",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
+    "start": "node server/index.js",
     "watch": "nodemon server/index.js"
   },
   "repository": {
