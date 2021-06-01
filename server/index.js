@@ -7,8 +7,8 @@ const { v4: uuidv4 } = require("uuid");
 const config = require("./config");
 
 const options = {
-  key: fs.readFileSync('./server/private.key'),
-  cert: fs.readFileSync('./server/certificate.crt')
+  key: fs.readFileSync('./server/rmmcosta.hopto.org.key'),
+  cert: fs.readFileSync('./server/rmmcosta.hopto.org.crt')
 };
 
 const httpsServer = https.createServer(options, app);
@@ -31,30 +31,40 @@ app.get("/room/:room", (req, res) => {
 io.on("connection", socket => {
   console.log("a user connected");
 
-  socket.on('joined-room', (roomId, userId) => {
-    console.log('joined-room', 'userid: ', userId, 'roomId ', roomId);
+  socket.on('joined-room', (roomId, userId, usersName) => {
+    console.log('joined-room', 'userid: ', userId, 'roomId: ', roomId, 'usersName: ', usersName);
     socket.join(roomId);
-    socket.broadcast.emit('user-connected', roomId, userId);
+    socket.broadcast.emit('user-connected', roomId, userId, usersName);
     socket.on('disconnect', () => {
       console.log("user disconnected with user id ", userId);
       socket.broadcast.emit('user disconnected', userId);
     });
   });
 
+  //on users changed Name
+  socket.on('changed-name', (roomId, userId, usersName) => {
+    console.log('changed-name', roomId, userId, usersName);
+    socket.broadcast.emit('changed-name', roomId, userId, usersName);
+  });
+
   //muteUser, unmuteUser, turnUserCameraOff, turnUserCameraOn
   socket.on('muteUser', (roomId, userId) => {
+    console.log('muteUser', roomId, userId);
     socket.broadcast.emit('muteUser', roomId, userId);
   });
 
   socket.on('unmuteUser', (roomId, userId) => {
+    console.log('unmuteUser', roomId, userId);
     socket.broadcast.emit('unmuteUser', roomId, userId);
   });
 
   socket.on('turnUserCameraOff', (roomId, userId) => {
+    console.log('turnUserCameraOff', roomId, userId);
     socket.broadcast.emit('turnUserCameraOff', roomId, userId);
   });
 
   socket.on('turnUserCameraOn', (roomId, userId) => {
+    console.log('turnUserCameraOn', roomId, userId);
     socket.broadcast.emit('turnUserCameraOn', roomId, userId);
   });
 

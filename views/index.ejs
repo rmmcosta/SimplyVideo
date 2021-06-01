@@ -11,6 +11,11 @@
   <script type="text/javascript">
     const ROOM_ID = "<%=roomId%>";
   </script>
+  <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+    integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
+    integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
+    crossorigin="anonymous"></script>
   <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
   <script src="/socket.io/socket.io.js" defer></script>
   <script src="/scripts/script.js" defer></script>
@@ -19,13 +24,30 @@
 </head>
 
 <body>
+  <!-- modal to acquire name-->
+  <div class="modal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" id="usersNameModal"
+    aria-labelledby="usersNameModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Enter your name</h5>
+        </div>
+        <div class="modal-body">
+          <input type="text" name="usersName" id="usersName" placeholder="your name" required>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="usersNameConfirm">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="main" id="video-grid">
     <div id="my-video-grid">
+      <div class="text-center mt-2 pos-left-top-corner">
+        <span class="badge rounded-pill bg-primary p-2 text-white" id="usersIdentity">My Video</span>
+      </div>
       <div id="my-video-placeholder" class="d-flex justify-content-center">
         <img src="/images/video-conf.jpeg" alt="my video" srcset="" width="100%" height="100%">
-      </div>
-      <div class="text-center mt-2">
-        <span class="badge rounded-pill bg-primary p-2 text-white">My Video</span>
       </div>
       <div class="d-flex justify-content-center">
         <div class="text-center border border-2 rounded-pill border-darkgray bg-lightgray p-2 m-2" id="myVideoControls">
@@ -35,11 +57,11 @@
       </div>
     </div>
     <div id="other-video-grid">
+      <div class="text-center pos-left-top-corner">
+        <span class="badge rounded-pill bg-primary p-2 text-white mt-2" id="othersVideoName">Others Video</span>
+      </div>
       <div id="others-video-placeholder" class="d-flex justify-content-center">
         <img src="/images/video-conf.jpeg" alt="others video" srcset="" width="80%" height="80%">
-      </div>
-      <div class="text-center">
-        <span class="badge rounded-pill bg-primary p-2 text-white mt-2">Others Video</span>
       </div>
       <div class="d-flex justify-content-center">
         <div class="text-center border border-2 rounded-pill border-darkgray bg-lightgray p-2 m-2"
