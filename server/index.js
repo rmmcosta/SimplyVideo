@@ -5,6 +5,7 @@ const fs = require('fs');
 const { Server } = require("socket.io");
 const { v4: uuidv4 } = require("uuid");
 const config = require("./config");
+const path = require("path");
 
 const options = {
   key: fs.readFileSync('/etc/ssl/rmmcosta.hopto.org.key'),
@@ -24,8 +25,12 @@ app.get("/", (req, res) => {
 });
 
 app.get("/room/:room", (req, res) => {
-  console.log("room route ", req.params.room);
-  res.render("index", { roomId: req.params.room });
+  if (req.params.room === 'pwabuilder-sw.js')
+    res.sendFile('pwabuilder-sw.js', { root: path.join(__dirname, '../public') });
+  else {
+    console.log("room route ", req.params.room);
+    res.render("index", { roomId: req.params.room });
+  }
 });
 
 io.on("connection", socket => {

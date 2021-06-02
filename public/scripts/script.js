@@ -11,17 +11,6 @@ const CONTROLS_INACTIVE_STYLE = ' m-2 transparent col-xs gray-dark';
 
 const socket = io();//by default points to the root path /
 
-//service worker
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/pwabuilder-sw.js')
-        .then(function (registration) {
-            console.log('Registration successful, scope is:', registration.scope);
-        })
-        .catch(function (error) {
-            console.log('Service worker registration failed, error:', error);
-        });
-}
-
 window.onload = () => {
     const usersNameModal = new bootstrap.Modal(document.getElementById('usersNameModal'), {
         backdrop: 'static',
