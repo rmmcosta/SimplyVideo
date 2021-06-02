@@ -4,7 +4,9 @@ let myStream;
 let isMyCameraOn = false;
 let isMySoundOn = false;
 const LOCAL_STORAGE_ITEM_USERSNAME = 'SIMPLYVIDEO_USERSNAME';
-const CONTROLS_ACTIVE_STYLE = ' m-2 col-xs gray-dark';
+const CONTROLS_BASE_STYLE = ' m-2 col-xs ';
+const CONTROLS_ACTIVE_DARK = CONTROLS_BASE_STYLE + 'gray-dark';
+const CONTROLS_ACTIVE_RED = CONTROLS_BASE_STYLE + 'text-danger';
 const CONTROLS_INACTIVE_STYLE = ' m-2 transparent col-xs gray-dark';
 
 const socket = io();//by default points to the root path /
@@ -84,6 +86,7 @@ peer.on('call', call => {
             addCustomControls('othersVideoControls', call.peer, false);
             removeWaiting();
             activateMyControls();
+            socket.emit('changed-name', ROOM_ID, myUserId, localStorage.getItem(LOCAL_STORAGE_ITEM_USERSNAME));
         });
     }).catch(err => {
         console.log('Failed to get local stream', err);
@@ -104,6 +107,7 @@ socket.on('user-connected', (roomId, userId, usersName) => { // If a new user co
             addOthersName('othersVideoName', usersName);
             removeWaiting();
             activateMyControls();
+            socket.emit('changed-name', ROOM_ID, myUserId, localStorage.getItem(LOCAL_STORAGE_ITEM_USERSNAME));
         });
     }
 });
@@ -123,6 +127,7 @@ socket.on('muteUser', (roomId, userId) => {
         return;
     if (userId === myUserId)
         return;
+    muteOthersVideo(userId);
 });
 
 socket.on('unmuteUser', (roomId, userId) => {
@@ -137,6 +142,7 @@ socket.on('turnUserCameraOff', (roomId, userId) => {
         return;
     if (userId === myUserId)
         return;
+    turnOffOthersVideo(userId);
 });
 
 socket.on('turnUserCameraOn', (roomId, userId) => {
@@ -144,6 +150,7 @@ socket.on('turnUserCameraOn', (roomId, userId) => {
         return;
     if (userId === myUserId)
         return;
+    turnOnOthersVideo(userId);
 });
 
 addVideoStream = (parentId, stream, muted, videoId) => {
@@ -161,20 +168,14 @@ addVideoStream = (parentId, stream, muted, videoId) => {
 addCustomControls = (parentId, videoId, isMuted) => {
     const audioElement = document.createElement('i');
     audioElement.className = isMuted === true ?
-        "fas fa-volume-mute" + CONTROLS_ACTIVE_STYLE : "fas fa-volume-mute" + CONTROLS_INACTIVE_STYLE;
+        "fas fa-volume-mute" + CONTROLS_ACTIVE_RED : "fas fa-volume-mute" + CONTROLS_INACTIVE_STYLE;
     audioElement.id = "audioOnOff";
     audioElement.onclick = () => {
         const videoElement = document.getElementById(videoId);
-        if (videoElement.muted === true) {
-            audioElement.className = "fas fa-volume-mute" + CONTROLS_INACTIVE_STYLE;
-            videoElement.muted = false;
-        } else {
-            audioElement.className = "fas fa-volume-mute" + CONTROLS_ACTIVE_STYLE;
-            videoElement.muted = true;
-        }
+        updateAudioAndVideo(videoElement, audioElement);
     };
     const volumeUpElement = document.createElement('i');
-    volumeUpElement.className = "fas fa-volume-up" + CONTROLS_ACTIVE_STYLE;
+    volumeUpElement.className = "fas fa-volume-up" + CONTROLS_ACTIVE_DARK;
     volumeUpElement.id = "volumeUp";
     volumeUpElement.onclick = () => {
         const videoElement = document.getElementById(videoId);
@@ -184,7 +185,7 @@ addCustomControls = (parentId, videoId, isMuted) => {
             videoElement.volume = 1;
     };
     const volumeDownElement = document.createElement('i');
-    volumeDownElement.className = "fas fa-volume-down" + CONTROLS_ACTIVE_STYLE;
+    volumeDownElement.className = "fas fa-volume-down" + CONTROLS_ACTIVE_DARK;
     volumeDownElement.id = "volumeDown";
     volumeDownElement.onclick = () => {
         const videoElement = document.getElementById(videoId);
@@ -195,7 +196,7 @@ addCustomControls = (parentId, videoId, isMuted) => {
     };
     const videoElement = document.getElementById(videoId);
     const volumeLevelElement = document.createElement('span');
-    volumeLevelElement.className = CONTROLS_ACTIVE_STYLE;
+    volumeLevelElement.className = CONTROLS_ACTIVE_DARK;
     volumeLevelElement.id = 'volumeLevel';
     volumeLevelElement.innerText = Math.round((videoElement.volume * 100)) + '%';
     videoElement.onvolumechange = event => {
@@ -219,7 +220,8 @@ addOthersName = (elemId, usersName) => {
 removeWaiting = () => {
     const othersVideoElement = document.getElementById('other-video-grid');
     const ballsLoaderElement = document.getElementById('waitingOthersVideo');
-    othersVideoElement.removeChild(ballsLoaderElement);
+    if (othersVideoElement && ballsLoaderElement)
+        othersVideoElement.removeChild(ballsLoaderElement);
 };
 
 activateMyControls = () => {
@@ -230,10 +232,71 @@ activateMyControls = () => {
     muteControl.onclick = () => {
         socket.emit(isMySoundOn === true ? 'muteUser' : 'unmuteUser', ROOM_ID, myUserId);
         isMySoundOn = !isMySoundOn;
+        muteControl.className = isMySoundOn ? "m-2 col-xs text-success fas fa-microphone" : "m-2 col-xs text-danger fas fa-microphone-slash";
     };
     videoControl.onclick = () => {
         socket.emit(isMyCameraOn ? 'turnUserCameraOff' : 'turnUserCameraOn', ROOM_ID, myUserId);
         isMyCameraOn = !isMyCameraOn;
-    }
+        videoControl.className = isMyCameraOn ? "m-2 col-xs text-success fas fa-video" : "m-2 col-xs text-danger fas fa-video-slash";
+        const myVideoElement = document.getElementById('myvideoid');
+        if (isMyCameraOn) {
+            myVideoElement.play();
+            if (document.getElementById('myVideoPaused'))
+                myVideoElement.parentElement.removeChild(document.getElementById('myVideoPaused'));
+        }
+        else {
+            myVideoElement.pause();
+            const pausedInfo = document.createElement('span');
+            pausedInfo.className = 'my-video-paused';
+            pausedInfo.innerText = 'Video Paused';
+            pausedInfo.id = 'myVideoPaused';
+            myVideoElement.parentElement.appendChild(pausedInfo);
+        }
+    };
 };
+
+muteOthersVideo = userId => {
+    const videoElement = document.getElementById(userId);
+    videoElement.muted = true;
+    const audioControl = document.getElementById('audioOnOff');
+    audioControl.className = "fas fa-volume-mute" + CONTROLS_ACTIVE_RED;
+    audioControl.onclick = () => { return; };//click does nothing
+};
+
+unmuteOthersVideo = userId => {
+    const videoElement = document.getElementById(userId);
+    videoElement.muted = false;
+    const audioControl = document.getElementById('audioOnOff');
+    audioControl.className = "fas fa-volume-mute" + CONTROLS_INACTIVE_STYLE;
+    audioElement.onclick = () => {
+        updateAudioAndVideo(videoElement, audioControl);
+    };
+};
+
+turnOffOthersVideo = userId => {
+    const videoElement = document.getElementById(userId);
+    videoElement.pause();
+    const pausedInfo = document.createElement('span');
+    pausedInfo.className = 'video-paused';
+    pausedInfo.innerText = 'Video Paused';
+    pausedInfo.id = 'videoPaused';
+    videoElement.parentElement.appendChild(pausedInfo);
+};
+
+turnOnOthersVideo = userId => {
+    const videoElement = document.getElementById(userId);
+    videoElement.play();
+    if (document.getElementById('videoPaused'))
+        videoElement.parentElement.removeChild(document.getElementById('videoPaused'));
+};
+
+updateAudioAndVideo = (videoElement, audioElement) => {
+    if (videoElement.muted === true) {
+        audioElement.className = "fas fa-volume-mute" + CONTROLS_INACTIVE_STYLE;
+        videoElement.muted = false;
+    } else {
+        audioElement.className = "fas fa-volume-mute" + CONTROLS_ACTIVE_RED;
+        videoElement.muted = true;
+    }
+}
 
