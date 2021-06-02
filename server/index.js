@@ -25,8 +25,22 @@ app.get("/", (req, res) => {
 });
 
 app.get("/room/:room", (req, res) => {
-  if (req.params.room === 'pwabuilder-sw.js')
-    res.sendFile('pwabuilder-sw.js', { root: path.join(__dirname, '../public') });
+  if (req.params.room === 'pwabuilder-sw.js') {
+    const options = {
+      root: path.join(__dirname, '/../public'),
+      headers: {
+        'Content-Type': 'application/javascript'
+      }
+    };
+    const fileName = req.params.room;
+    res.sendFile(fileName, options, err => {
+      if (err) {
+        next(err);
+      } else {
+        console.log('Sent:', fileName);
+      }
+    });
+  }
   else {
     console.log("room route ", req.params.room);
     res.render("index", { roomId: req.params.room });
