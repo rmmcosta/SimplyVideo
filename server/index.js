@@ -7,8 +7,8 @@ const { v4: uuidv4 } = require("uuid");
 const config = require("./config");
 
 const options = {
-  key: fs.readFileSync('./server/rmmcosta.hopto.org.key'),
-  cert: fs.readFileSync('./server/rmmcosta.hopto.org.crt')
+  key: fs.readFileSync('/etc/ssl/rmmcosta.hopto.org.key'),
+  cert: fs.readFileSync('/etc/ssl/rmmcosta.hopto.org.crt')
 };
 
 const httpsServer = https.createServer(options, app);
