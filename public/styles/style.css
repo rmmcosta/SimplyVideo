@@ -62,9 +62,19 @@
 }
 
 video {
-  width     : 80%;
-  height    : 80%;
-  object-fit: cover;
+  width        : 80%;
+  height       : 80%;
+  object-fit   : cover;
+  max-height   : 35vh;
+  max-width    : 90vw;
+  border-radius: 5px;
+}
+
+@media (min-width:800px) {
+  video {
+    max-height: 85vh;
+    max-width : 60vw;
+  }
 }
 
 .video-paused {

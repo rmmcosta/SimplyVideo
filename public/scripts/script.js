@@ -11,6 +11,18 @@ const CONTROLS_INACTIVE_STYLE = ' m-2 transparent col-xs gray-dark';
 
 const socket = io();//by default points to the root path /
 
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js')
+            .then(registration => {
+                console.log('Service Worker is registered', registration);
+            })
+            .catch(err => {
+                console.error('Registration failed:', err);
+            });
+    });
+}
+
 let deferredPrompt;
 
 window.addEventListener('beforeinstallprompt', (e) => {

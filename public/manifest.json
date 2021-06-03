@@ -3,11 +3,11 @@
     "lang": "en",
     "name": "Simply Video",
     "short_name": "Simply Video",
-    "scope": "https://rmmcosta.hopto.org:3000",
+    "scope": "https://rmmcosta.hopto.org:3000/room",
     "display": "minimal-ui",
-    "start_url": "https://rmmcosta.hopto.org:3000",
+    "start_url": "https://rmmcosta.hopto.org:3000/room",
     "background_color": "#000000",
-    "theme_color": "transparent",
+    "theme_color": "#E9E9E9",
     "description": "Do simple video calls with anyone you want.",
     "orientation": "any",
     "related_applications": [],
@@ -111,7 +111,7 @@
             "purpose": "maskable"
         }
     ],
-    "url": "https://rmmcosta.hopto.org:3000",
+    "url": "https://rmmcosta.hopto.org:3000/room",
     "screenshots": [
         {
             "src": "/screenshots/SimplyVideo1.png",
