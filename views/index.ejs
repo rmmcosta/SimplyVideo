@@ -14,6 +14,7 @@
     const el = document.createElement('pwa-update');
     document.body.appendChild(el);
   </script>
+  <script type="module" src="modules/pwainstall.js"></script>
   <script type="text/javascript">
     const ROOM_ID = "<%=roomId%>";
   </script>
@@ -42,6 +43,7 @@
           <input type="text" name="usersName" id="usersName" placeholder="your name" required>
         </div>
         <div class="modal-footer">
+          <pwa-install id="pwaInstall"></pwa-install>
           <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="usersNameConfirm">Confirm</button>
         </div>
       </div>
