@@ -11,6 +11,28 @@ const CONTROLS_INACTIVE_STYLE = ' m-2 transparent col-xs gray-dark';
 
 const socket = io();//by default points to the root path /
 
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    // Prevent the mini-infobar from appearing on mobile
+    e.preventDefault();
+    // Stash the event so it can be triggered later.
+    deferredPrompt = e;
+    // Update UI notify the user they can install the PWA
+    showInstallPromotion();
+    // Optionally, send analytics event that PWA install promo was shown.
+    console.log(`'beforeinstallprompt' event was fired.`);
+});
+
+window.addEventListener('appinstalled', () => {
+    // Hide the app-provided install promotion
+    hideInstallPromotion();
+    // Clear the deferredPrompt so it can be garbage collected
+    deferredPrompt = null;
+    // Optionally, send analytics event to indicate successful install
+    console.log('PWA was installed');
+});
+
 window.onload = () => {
     const usersNameModal = new bootstrap.Modal(document.getElementById('usersNameModal'), {
         backdrop: 'static',
