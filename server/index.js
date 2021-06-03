@@ -27,7 +27,7 @@ app.get("/", (req, res) => {
 app.get("/room/:room", (req, res) => {
   if (req.params.room === 'pwabuilder-sw.js') {
     const options = {
-      root: path.join(__dirname, '/../public'),
+      root: path.join(__dirname, '/../public/room'),
       headers: {
         'Content-Type': 'application/javascript'
       }
