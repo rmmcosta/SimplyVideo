@@ -140,9 +140,9 @@
         }
     ],
     "categories": [
-        "phone-calls",
-        "video-calls",
-        "chat",
-        "video-chatting"
+        "social",
+        "utilities",
+        "entertainment",
+        "productivity"
     ]
 }
