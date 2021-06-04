@@ -25,7 +25,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/room/:room", (req, res) => {
-  if (req.params.room === 'pwabuilder-sw.js') {
+  if (req.params.room === 'service-worker.js') {
     const options = {
       root: path.join(__dirname, '/../public/room'),
       headers: {
@@ -35,7 +35,7 @@ app.get("/room/:room", (req, res) => {
     const fileName = req.params.room;
     res.sendFile(fileName, options, err => {
       if (err) {
-        next(err);
+        console.log('Error:', err);
       } else {
         console.log('Sent:', fileName);
       }
