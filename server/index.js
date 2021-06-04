@@ -21,13 +21,13 @@ app.use(express.static(__dirname + "/../public"));
 
 app.get("/", (req, res) => {
   console.log("main route");
-  res.redirect(`/room/${uuidv4()}`);
+  res.redirect(`/${uuidv4()}`);
 });
 
-app.get("/room/:room", (req, res) => {
+app.get("/:room", (req, res) => {
   if (req.params.room === 'service-worker.js') {
     const options = {
-      root: path.join(__dirname, '/../public/room'),
+      root: path.join(__dirname, '/../public'),
       headers: {
         'Content-Type': 'application/javascript'
       }
