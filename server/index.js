@@ -20,7 +20,7 @@ app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/../public"));
 
 app.get("/", (req, res) => {
-  console.log("main route");
+  console.log("main route " + req.secure ? 'secure' : 'insecure');
   res.redirect(`/${uuidv4()}`);
 });
 
