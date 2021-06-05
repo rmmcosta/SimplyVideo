@@ -1,3 +1,42 @@
+.home {
+  width : 100vw;
+  height: 100vh;
+}
+
+.home-avatar {
+  max-width : 40vw;
+  max-height: 40vh;
+  box-shadow: 2px 2px #dee2e6;
+}
+
+.home-option {
+  max-width : 40vw;
+  max-height: 40vh;
+  padding   : 10px;
+  margin-top: 5px;
+  color     : #4C91BC;
+}
+
+.home-option.home-option-selected,
+.home-option:hover {
+  color           : white;
+  background-color: #4C91BC;
+  border-radius   : 0px 25px 25px 0px;
+}
+
+input {
+  outline     : 0;
+  border-width: 0 0 2px;
+  border-color: #dee2e6;
+  padding-left: 10px;
+  color       : gray;
+}
+
+input:focus {
+  border-color: #4C91BC;
+  color       : black;
+}
+
 #video-grid {
   display              : grid;
   grid-template-columns: repeat(1, 1fr);

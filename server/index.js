@@ -17,17 +17,21 @@ const io = new Server(httpsServer);
 
 app.set("view engine", "ejs");
 
-app.use(express.static(__dirname + "/../public"));
+app.use(express.static(__dirname + "/../public/SimplyVideo"));
 
-app.get("/", (req, res) => {
-  console.log("main route " + req.secure ? 'secure' : 'insecure');
-  res.redirect(`/${uuidv4()}`);
+app.get("/SimplyVideo", (req, res) => {
+  res.render("index");
 });
 
-app.get("/:room", (req, res) => {
+app.get("/SimplyVideo/room", (req, res) => {
+  console.log("room route " + req.secure ? 'secure' : 'insecure');
+  res.redirect(`/room/${uuidv4()}`);
+});
+
+app.get("/SimplyVideo/room/:room", (req, res) => {
   if (req.params.room === 'service-worker.js') {
     const options = {
-      root: path.join(__dirname, '/../public'),
+      root: path.join(__dirname, '/../public/SimplyVideo'),
       headers: {
         'Content-Type': 'application/javascript'
       }
@@ -43,7 +47,7 @@ app.get("/:room", (req, res) => {
   }
   else {
     console.log("room route ", req.params.room);
-    res.render("index", { roomId: req.params.room });
+    res.render("room", { roomId: req.params.room });
   }
 });
 

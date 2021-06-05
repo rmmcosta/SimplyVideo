@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('metaAndLinks'); %>
+    <script type="text/javascript">
+      const ROOM_ID = "<%=roomId%>";
+    </script>
+    <script src="/scripts/room.js" defer></script>
+    <% include('commonScripts'); %>
+      <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
+      <script src="/socket.io/socket.io.js" defer></script>
+      <title>Simply Video - Room</title>
+</head>
+
+<body>
+  <!-- modal to acquire name-->
+  <div class="modal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" id="usersNameModal"
+    aria-labelledby="usersNameModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Enter your name</h5>
+        </div>
+        <div class="modal-body">
+          <input type="text" name="usersName" id="usersName" placeholder="your name" required>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="usersNameConfirm">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="main" id="video-grid">
+    <div id="my-video-grid">
+      <div class="text-center mt-2 pos-left-top-corner">
+        <span class="badge rounded-pill bg-primary p-2 text-white" id="usersIdentity">My Video</span>
+      </div>
+      <div id="my-video-placeholder" class="d-flex justify-content-center">
+        <img src="/images/video-conf.jpeg" alt="my video" srcset="" width="100%" height="100%">
+      </div>
+      <div class="d-flex justify-content-center">
+        <div class="text-center border border-2 rounded-pill border-darkgray bg-lightgray p-2 m-2" id="myVideoControls">
+          <i id="muteControl" class="m-2 col-xs text-success fas fa-microphone"></i>
+          <i id="videoControl" class="m-2 transparent col-xs text-success fas fa-video"></i>
+        </div>
+      </div>
+    </div>
+    <div id="other-video-grid">
+      <div class="text-center pos-left-top-corner">
+        <span class="badge rounded-pill bg-primary p-2 text-white mt-2" id="othersVideoName">Others Video</span>
+      </div>
+      <div id="others-video-placeholder" class="d-flex justify-content-center">
+        <img src="/images/video-conf.jpeg" alt="others video" srcset="" width="80%" height="80%">
+      </div>
+      <div class="d-flex justify-content-center">
+        <div class="text-center border border-2 rounded-pill border-darkgray bg-lightgray p-2 m-2"
+          id="othersVideoControls">
+          <i class="m-2 transparent col-xs gray-dark fas fa-volume-mute"></i>
+          <i class="m-2 transparent col-xs gray-dark fas fa-volume-up"></i>
+          <i class="m-2 transparent col-xs gray-dark fas fa-volume-down"></i>
+          <span class="m-2 transparent col-xs gray-dark">50%</span>
+        </div>
+      </div>
+      <div class="ball-loader" id="waitingOthersVideo">
+        <div class="ball-loader-ball ball1"></div>
+        <div class="ball-loader-ball ball2"></div>
+        <div class="ball-loader-ball ball3"></div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
