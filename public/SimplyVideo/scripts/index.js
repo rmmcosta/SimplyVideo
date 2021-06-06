@@ -1,4 +1,6 @@
 const LOCAL_STORAGE_ITEM_USERSNAME = 'SIMPLYVIDEO_USERSNAME';
+const LOCAL_STORAGE_ITEM_ROOM = 'SIMPLYVIDEO_ROOM';
+const LOCAL_STORAGE_ITEM_AVATAR = 'SIMPLYVIDEO_AVATAR';
 
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
@@ -178,29 +180,44 @@ window.onload = () => {
         divUsersNameBeforeMouseEntermId = '';
         divRoomIdBeforeMouseEnter = '';
         divAvatarBeforeMouseEnter = '';
-        //Todo
+        const avatarModal = new bootstrap.Modal(document.getElementById('avatarModal'));
+        avatarModal.show();
     };
 
     const go2Room = document.getElementById('go2Room');
-    /*const roomInputId = document.getElementById('roomInputId');
-    roomInputId.onkeyup = event => {
-        const room = event.target.value;
-        if (room !== null && room.trim().length > 0) {
-            go2Room.className = '';
-            go2Room.disabled = false;
-        } else {
-            go2Room.className = 'invisible';
-            go2Room.disabled = true;
-        }
-    };*/
+    const previousRoom = localStorage.getItem(LOCAL_STORAGE_ITEM_ROOM);
+    if (previousRoom !== null) {
+        const roomInputId = document.getElementById('roomInputId');
+        roomInputId.value = previousRoom;
+    }
     go2Room.onclick = event => {
         event.preventDefault();
         const room = roomInputId.value;
         if (room !== null) {
             window.location.pathname = '/SimplyVideo/room/' + room;
+            localStorage.setItem(LOCAL_STORAGE_ITEM_ROOM, room);
         }
         else {
             window.location.pathname = '/SimplyVideo/room';
         }
+    };
+
+    let savedAvatar = localStorage.getItem(LOCAL_STORAGE_ITEM_AVATAR);
+
+    if (savedAvatar === null) {
+        localStorage.setItem(LOCAL_STORAGE_ITEM_AVATAR, 'avatar-male-3.png');
+        savedAvatar = 'avatar-male-3.png';
     }
+    else {
+        const avatarPicture = document.getElementById('avatarPicture');
+        if (!avatarPicture.src.includes(savedAvatar)) {
+            avatarPicture.src = '/images/avatars/' + savedAvatar;
+        }
+    }
+
+    const carouselAvatars = document.getElementsByClassName('carousel-item');
+    carouselAvatars.onclick = event => {
+        console.log(event);
+        console.log(this);
+    };
 };
