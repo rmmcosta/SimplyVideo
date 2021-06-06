@@ -1,3 +1,8 @@
+:root {
+  --primary-color  : #4C91BC;
+  --secondary-color: #dee2e6;
+}
+
 .home {
   width : 100vw;
   height: 100vh;
@@ -6,35 +11,55 @@
 .home-avatar {
   max-width : 40vw;
   max-height: 40vh;
-  box-shadow: 2px 2px #dee2e6;
+  box-shadow: 2px 2px var(--secondary-color);
 }
 
 .home-option {
-  max-width : 40vw;
-  max-height: 40vh;
+  max-width : 90vw;
+  max-height: 90vh;
   padding   : 10px;
   margin-top: 5px;
-  color     : #4C91BC;
+  color     : var(--primary-color);
+}
+
+.home-option-input {
+  position: absolute;
+}
+
+@media (min-width:800px) {
+  .home-option {
+    max-width : 40vw;
+    max-height: 40vh;
+  }
 }
 
 .home-option.home-option-selected,
 .home-option:hover {
   color           : white;
-  background-color: #4C91BC;
+  background-color: var(--primary-color);
   border-radius   : 0px 25px 25px 0px;
 }
 
-input {
+input[type=text] {
   outline     : 0;
   border-width: 0 0 2px;
-  border-color: #dee2e6;
+  border-color: var(--secondary-color);
   padding-left: 10px;
   color       : gray;
 }
 
-input:focus {
-  border-color: #4C91BC;
+input:focus[type=text] {
+  border-color: var(--primary-color);
   color       : black;
+}
+
+input[type=submit] {
+  background-color: var(--primary-color);
+  color           : white;
+  border          : none;
+  padding         : 5px;
+  font-size       : .8rem;
+  border-radius   : 5px
 }
 
 #video-grid {

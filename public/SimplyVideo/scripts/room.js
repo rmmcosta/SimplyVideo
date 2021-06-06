@@ -11,55 +11,22 @@ const CONTROLS_INACTIVE_STYLE = ' m-2 transparent col-xs gray-dark';
 
 const socket = io();//by default points to the root path /
 
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('service-worker.js')
-            .then(registration => {
-                console.log('Service Worker is registered', registration);
-            })
-            .catch(err => {
-                console.error('Registration failed:', err);
-            });
-    });
-}
-
-let deferredPrompt;
-
-window.addEventListener('beforeinstallprompt', (e) => {
-    // Prevent the mini-infobar from appearing on mobile
-    e.preventDefault();
-    // Stash the event so it can be triggered later.
-    deferredPrompt = e;
-    // Update UI notify the user they can install the PWA
-    showInstallPromotion();
-    // Optionally, send analytics event that PWA install promo was shown.
-    console.log(`'beforeinstallprompt' event was fired.`);
-});
-
-window.addEventListener('appinstalled', () => {
-    // Hide the app-provided install promotion
-    hideInstallPromotion();
-    // Clear the deferredPrompt so it can be garbage collected
-    deferredPrompt = null;
-    // Optionally, send analytics event to indicate successful install
-    console.log('PWA was installed');
-});
-
 window.onload = () => {
     const usersNameModal = new bootstrap.Modal(document.getElementById('usersNameModal'), {
         backdrop: 'static',
         keyboard: false
     });
-    usersNameModal.show();
+    //usersNameModal.show();//now is only opened on click
     const usersConfirmButton = document.getElementById('usersNameConfirm');
     const previousName = localStorage.getItem(LOCAL_STORAGE_ITEM_USERSNAME);
     if (previousName !== null) {
         const usersNameInput = document.getElementById('usersName');
         usersNameInput.value = previousName;
+        const usersIdentityElem = document.getElementById('usersIdentity');
+        usersIdentityElem.innerText = previousName;
     }
-    const usersNameElem = document.getElementById('usersName');
-    const usersIdentityElem = document.getElementById('usersIdentity');
     usersConfirmButton.onclick = () => {
+        const usersNameElem = document.getElementById('usersName');
         const usersName = usersNameElem.value;
         if (usersName === null || usersName.length === 0)
             return;
@@ -68,6 +35,7 @@ window.onload = () => {
             if (myUserId !== null)
                 socket.emit('changed-name', ROOM_ID, myUserId, usersName);
         }
+        const usersIdentityElem = document.getElementById('usersIdentity');
         usersIdentityElem.innerText = usersName;
         usersNameModal.hide();
     };

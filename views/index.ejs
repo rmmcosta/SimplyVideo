@@ -4,27 +4,33 @@
 <head>
   <%- include('metaAndLinks'); %>
     <%- include('commonScripts'); %>
+      <script src="/scripts/index.js"></script>
       <title>Simply Video - Home</title>
 </head>
 
 <body>
   <div class="home d-flex align-items-center justify-content-center">
     <div>
-      <div class="row">
+      <div class="row justify-content-center">
         <img class="img-fluid img-thumbnail home-avatar rounded" src="/images/avatars/avatar-male-3.png" alt="My Avatar"
           srcset="">
       </div>
       <ul class="container mt-2">
-        <li class="row home-option home-option-selected" id="Name">Name</li>
-        <li class="row home-option" id="Room">Room</li>
-        <li class="row home-option" id="Avatar">Avatar</li>
+        <li class="row home-option home-option-selected" id="optionUsersName">Name</li>
+        <li class="row home-option" id="optionRoomId">Room</li>
+        <li class="row home-option" id="optionAvatar">Avatar</li>
       </ul>
-      <div class="home-option-input">
-        <input type="text" name="avatarName" id="avatarName" placeholder="John Doe">
+      <div class="home-option-input" id="divUsersName">
+        <input type="text" name="usersName" id="usersName" placeholder="John Doe" autocomplete="false">
+        <input class="invisible" type="submit" value="Confirm" id="confirmUsersName" disabled>
       </div>
-      <div class="home-option-input invisible">
+      <div class="home-option-input invisible" id="divRoomId">
         <input type="text" name="roomInputId" id="roomInputId" placeholder="room id" aria-describedby="roomHelp">
+        <input type="submit" value="Go" id="go2Room">
         <small id="roomHelp" class="form-text text-muted">If none, a random one will be generated</small>
+      </div>
+      <div class="home-option-input invisible" id="divChangeAvatar">
+        <small class="form-text text-muted">Click to change your avatar</small>
       </div>
     </div>
   </div>
