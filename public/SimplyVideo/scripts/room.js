@@ -19,10 +19,10 @@ window.onload = () => {
     //usersNameModal.show();//now is only opened on click
     const usersConfirmButton = document.getElementById('usersNameConfirm');
     const previousName = localStorage.getItem(LOCAL_STORAGE_ITEM_USERSNAME);
+    const usersIdentityElem = document.getElementById('usersIdentity');
     if (previousName !== null) {
         const usersNameInput = document.getElementById('usersName');
         usersNameInput.value = previousName;
-        const usersIdentityElem = document.getElementById('usersIdentity');
         usersIdentityElem.innerText = previousName;
     }
     usersConfirmButton.onclick = () => {
@@ -35,7 +35,6 @@ window.onload = () => {
             if (myUserId !== null)
                 socket.emit('changed-name', ROOM_ID, myUserId, usersName);
         }
-        const usersIdentityElem = document.getElementById('usersIdentity');
         usersIdentityElem.innerText = usersName;
         usersNameModal.hide();
     };

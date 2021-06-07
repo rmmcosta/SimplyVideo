@@ -6,10 +6,10 @@
     <script type="text/javascript">
       const ROOM_ID = "<%=roomId%>";
     </script>
-    <script src="/scripts/room.js" defer></script>
-    <% include('commonScripts'); %>
+    <%- include('commonScripts'); %>
       <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
       <script src="/socket.io/socket.io.js" defer></script>
+      <script src="/scripts/room.js" defer></script>
       <title>Simply Video - Room</title>
 </head>
 
@@ -37,12 +37,13 @@
         <span class="badge rounded-pill bg-primary p-2 text-white" id="usersIdentity">My Video</span>
       </div>
       <div id="my-video-placeholder" class="d-flex justify-content-center">
-        <img src="/images/video-conf.jpeg" alt="my video" srcset="" width="100%" height="100%">
+        <img src="/images/avatars/avatar-male-3.png" alt="my video" srcset="" width="100%" height="100%">
       </div>
       <div class="d-flex justify-content-center">
         <div class="text-center border border-2 rounded-pill border-darkgray bg-lightgray p-2 m-2" id="myVideoControls">
           <i id="muteControl" class="m-2 col-xs text-success fas fa-microphone"></i>
           <i id="videoControl" class="m-2 transparent col-xs text-success fas fa-video"></i>
+          <!--Todo: Add a control to turn off the call and return to the home page-->
         </div>
       </div>
     </div>
@@ -51,7 +52,8 @@
         <span class="badge rounded-pill bg-primary p-2 text-white mt-2" id="othersVideoName">Others Video</span>
       </div>
       <div id="others-video-placeholder" class="d-flex justify-content-center">
-        <img src="/images/video-conf.jpeg" alt="others video" srcset="" width="80%" height="80%">
+        <img class="rounded" src="/images/avatars/avatar-female-1.png" alt="others video" srcset="" width="80%"
+          height="80%">
       </div>
       <div class="d-flex justify-content-center">
         <div class="text-center border border-2 rounded-pill border-darkgray bg-lightgray p-2 m-2"

@@ -167,6 +167,8 @@ window.onload = () => {
         divAvatarBeforeMouseEnter = '';
     };
 
+    const avatarModal = new bootstrap.Modal(document.getElementById('avatarModal'));
+
     optionAvatar.onclick = () => {
         if (!optionAvatar.className.includes('home-option-selected')) {
             optionAvatar.className += ' home-option-selected';
@@ -180,7 +182,6 @@ window.onload = () => {
         divUsersNameBeforeMouseEntermId = '';
         divRoomIdBeforeMouseEnter = '';
         divAvatarBeforeMouseEnter = '';
-        const avatarModal = new bootstrap.Modal(document.getElementById('avatarModal'));
         avatarModal.show();
     };
 
@@ -203,21 +204,25 @@ window.onload = () => {
     };
 
     let savedAvatar = localStorage.getItem(LOCAL_STORAGE_ITEM_AVATAR);
+    const avatarPicture = document.getElementById('avatarPicture');
 
     if (savedAvatar === null) {
-        localStorage.setItem(LOCAL_STORAGE_ITEM_AVATAR, 'avatar-male-3.png');
-        savedAvatar = 'avatar-male-3.png';
+        localStorage.setItem(LOCAL_STORAGE_ITEM_AVATAR, '/images/avatars/avatar-male-3.png');
+        savedAvatar = '/images/avatars/avatar-male-3.png';
     }
     else {
-        const avatarPicture = document.getElementById('avatarPicture');
         if (!avatarPicture.src.includes(savedAvatar)) {
-            avatarPicture.src = '/images/avatars/' + savedAvatar;
+            avatarPicture.src = savedAvatar;
         }
     }
 
     const carouselAvatars = document.getElementsByClassName('carousel-item');
-    carouselAvatars.onclick = event => {
-        console.log(event);
-        console.log(this);
-    };
+    for (item of carouselAvatars) {
+        item.onclick = event => {
+            avatarPicture.src = event.target.src;
+            localStorage.setItem(LOCAL_STORAGE_ITEM_AVATAR, event.target.src);
+            savedAvatar = event.target.src;
+            avatarModal.hide();
+        };
+    }
 };

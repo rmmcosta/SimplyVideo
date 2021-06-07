@@ -90,6 +90,11 @@ input[type=submit] {
   width: 80%;
 }
 
+#others-video-placeholder img {
+  max-height      : 80vh;
+  background-color: #3e3f40;
+}
+
 @media (min-width:800px) {
   #video-grid {
     display              : grid;
@@ -162,7 +167,9 @@ video {
 }
 
 #usersIdentity {
-  cursor: pointer;
+  cursor  : pointer;
+  z-index : 2;
+  position: fixed;
 }
 
 .pos-left-top-corner {
@@ -218,4 +225,8 @@ video {
   to {
     transform: translateX(-50%) scale(0);
   }
+}
+
+.carousel-indicators {
+  background-color: var(--primary-color);
 }
