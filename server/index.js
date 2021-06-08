@@ -91,8 +91,14 @@ io.on("connection", socket => {
     socket.broadcast.emit('turnUserCameraOn', roomId, userId);
   });
 
-  socket.on('disconnect', () => {
+  socket.on('disconnect', (roomId, userId) => {
     console.log("user disconnected");
+    socket.broadcast.emit('user-ended-call', roomId, userId);
+  });
+
+  socket.on('ended-call', (roomId, userId) => {
+    console.log('ended-call', roomId, userId);
+    socket.broadcast.emit('user-ended-call', roomId, userId);
   });
 });
 

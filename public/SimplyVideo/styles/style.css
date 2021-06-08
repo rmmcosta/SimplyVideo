@@ -169,7 +169,11 @@ video {
 #usersIdentity {
   cursor  : pointer;
   z-index : 2;
-  position: fixed;
+  position: absolute;
+}
+
+i.fas {
+  cursor: pointer;
 }
 
 .pos-left-top-corner {

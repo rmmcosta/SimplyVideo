@@ -154,6 +154,38 @@ socket.on('turnUserCameraOn', (roomId, userId) => {
     turnOnOthersVideo(userId);
 });
 
+socket.on('user-ended-call', (roomId, userId) => {
+    if (roomId !== ROOM_ID)
+        return;
+    if (userId === myUserId)
+        return;
+    //Todo:feedback message saying who left the call
+    const videoElement = document.getElementById(userId);
+    const parent = videoElement.parentElement;
+    parent.removeChild(videoElement);
+    const placeholder = document.createElement('img');
+    placeholder.className = "rounded";
+    placeholder.src = "/images/avatars/avatar-female-1.png";
+    placeholder.style.width = "80%";
+    placeholder.style.height = "80%";
+    parent.appendChild(placeholder);
+    const parentControls = document.getElementById("othersVideoControls");
+    parentControls.innerHTML = '';
+    const controlMute = document.createElement('i');
+    controlMute.className = "m-2 transparent col-xs gray-dark fas fa-volume-mute";
+    const controlVUp = document.createElement('i');
+    controlVUp.className = "m-2 transparent col-xs gray-dark fas fa-volume-up";
+    const controlVDown = document.createElement('i');
+    controlVDown.className = "m-2 transparent col-xs gray-dark fas fa-volume-down";
+    const controlVolume = document.createElement('span');
+    controlVolume.className = "m-2 transparent col-xs gray-dark";
+    controlVolume.innerText = "50%";
+    parentControls.appendChild(controlMute);
+    parentControls.appendChild(controlVUp);
+    parentControls.appendChild(controlVDown);
+    parentControls.appendChild(controlVolume);
+});
+
 addVideoStream = (parentId, stream, muted, videoId) => {
     const videoParent = document.getElementById(parentId);
     videoParent.innerHTML = '';
@@ -253,6 +285,12 @@ activateMyControls = () => {
             pausedInfo.id = 'myVideoPaused';
             myVideoElement.parentElement.appendChild(pausedInfo);
         }
+    };
+    const callControl = document.getElementById('callControl');
+    callControl.onclick = () => {
+        socket.emit('ended-call', ROOM_ID, myUserId);
+        socket.emit('changed-name', ROOM_ID, myUserId, 'Unknown');
+        window.location.pathname = '/SimplyVideo';
     };
 };
 
