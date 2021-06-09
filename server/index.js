@@ -96,9 +96,9 @@ io.on("connection", socket => {
     socket.broadcast.emit('user-ended-call', roomId, userId);
   });
 
-  socket.on('ended-call', (roomId, userId) => {
-    console.log('ended-call', roomId, userId);
-    socket.broadcast.emit('user-ended-call', roomId, userId);
+  socket.on('ended-call', (roomId, userId, userName) => {
+    console.log('ended-call', roomId, userId, userName);
+    socket.broadcast.emit('user-ended-call', roomId, userId, userName);
   });
 });
 

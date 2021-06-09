@@ -154,12 +154,50 @@ socket.on('turnUserCameraOn', (roomId, userId) => {
     turnOnOthersVideo(userId);
 });
 
-socket.on('user-ended-call', (roomId, userId) => {
+socket.on('user-ended-call', (roomId, userId, userName) => {
     if (roomId !== ROOM_ID)
         return;
     if (userId === myUserId)
         return;
     //Todo:feedback message saying who left the call
+    const toast = document.createElement('div');
+    toast.id = 'endedCallToast';
+    toast.className = 'toast';
+    toast.setAttribute('role', 'alert');
+    toast.setAttribute('aria-live', 'assertive');
+    toast.setAttribute('aria-atomic', 'true');
+    toast.setAttribute('data-delay', "10000");
+    toast.style = 'position:absolute; right:0; top:0;';
+    const toastHeader = document.createElement('div');
+    toastHeader.className = 'toast-header';
+    const toastTitle = document.createElement('strong');
+    toastTitle.className = 'mr-auto';
+    toastTitle.innerText = "Ended Call";
+    const toastExtraText = document.createElement('small');
+    toastExtraText.className = 'text-muted ms-2';
+    toastExtraText.innerText = 'just now';
+    const toastDismissButton = document.createElement('button');
+    toastDismissButton.type = "button";
+    toastDismissButton.className = "ml-2 mb-1 close";
+    toastDismissButton.setAttribute('data-dismiss', 'toast');
+    toastDismissButton.setAttribute('aria-label', 'close');
+    const toastDismissIcon = document.createElement('i');
+    toastDismissIcon.setAttribute('aria-hidden', 'true');
+    toastDismissIcon.className = 'fas fa-times';
+    toastDismissIcon.style = 'font-size: .75rem;';
+    const toastBody = document.createElement('div');
+    toastBody.className = 'toast-body';
+    toastBody.innerText = `${userName} just left the call.`;
+    toastDismissButton.appendChild(toastDismissIcon);
+    toastHeader.appendChild(toastTitle);
+    toastHeader.appendChild(toastExtraText);
+    toastHeader.appendChild(toastDismissButton);
+    toast.appendChild(toastHeader);
+    toast.appendChild(toastBody);
+    const otherVideoGrid = document.getElementById('other-video-grid');
+    otherVideoGrid.appendChild(toast);
+    $('#endedCallToast').toast('show');
+    //
     const videoElement = document.getElementById(userId);
     const parent = videoElement.parentElement;
     parent.removeChild(videoElement);
@@ -288,7 +326,7 @@ activateMyControls = () => {
     };
     const callControl = document.getElementById('callControl');
     callControl.onclick = () => {
-        socket.emit('ended-call', ROOM_ID, myUserId);
+        socket.emit('ended-call', ROOM_ID, myUserId, localStorage.getItem(LOCAL_STORAGE_ITEM_USERSNAME));
         socket.emit('changed-name', ROOM_ID, myUserId, 'Unknown');
         window.location.pathname = '/SimplyVideo';
     };
