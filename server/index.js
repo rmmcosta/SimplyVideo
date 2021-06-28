@@ -23,6 +23,25 @@ app.get("/SimplyVideo", (req, res) => {
   res.render("index");
 });
 
+app.get("/SimplyVideo/:resource", (req, res) => {
+  if (req.params.resource === 'service-worker.js') {
+    const options = {
+      root: path.join(__dirname, '/../public/SimplyVideo'),
+      headers: {
+        'Content-Type': 'application/javascript'
+      }
+    };
+    const fileName = req.params.resource;
+    res.sendFile(fileName, options, err => {
+      if (err) {
+        console.log('Error:', err);
+      } else {
+        console.log('Sent:', fileName);
+      }
+    });
+  }
+});
+
 app.get("/SimplyVideo/room", (req, res) => {
   console.log("room route " + req.secure ? 'secure' : 'insecure');
   res.redirect(`/room/${uuidv4()}`);
