@@ -1,7 +1,7 @@
 const filesToCache = [
     'styles/style.css',
     'offline.html',
-    'images/video-conf.jpeg',
+    'images/avatars/',
     'icons/'
 ];
 
